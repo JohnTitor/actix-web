@@ -12,6 +12,7 @@
 
 * `Query` payload made `pub`. Allows user to pattern-match the payload.
 
+* Upgrade `rustls` dependency version to 0.16.0
 
 ## [1.0.5] - 2019-07-18
 

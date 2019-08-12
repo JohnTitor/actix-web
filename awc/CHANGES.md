@@ -1,5 +1,11 @@
 # Changes
 
+## [0.2.4] - unreleased
+
+### Changed
+
+* Upgrade `rustls` dependency version to 0.16.0
+
 ## [0.2.3] - 2019-08-01
 
 ### Added

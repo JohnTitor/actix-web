@@ -6,6 +6,7 @@
 
 * Dropped the `byteorder`-dependency in favor of `stdlib`-implementation
 
+* Upgrade `rustls` dependency version to 0.16.0
 
 ## [0.2.8] - 2019-08-01
 
