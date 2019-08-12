@@ -8,6 +8,8 @@
 
 * Upgrade `rustls` dependency version to 0.16.0
 
+* Upgrade `ring` dependency version to 0.16.7
+
 ## [0.2.8] - 2019-08-01
 
 ### Added

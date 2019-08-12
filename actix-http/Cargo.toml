@@ -86,7 +86,7 @@ tokio-current-thread = "0.1"
 trust-dns-resolver = { version="0.11.1", default-features = false }
 
 # for secure cookie
-ring = { version = "0.14.6", optional = true }
+ring = { version = "0.16.7", optional = true }
 
 # compression
 brotli2 = { version="0.3.2", optional = true }
