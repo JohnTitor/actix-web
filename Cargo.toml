@@ -123,6 +123,8 @@ actix-web-codegen = { path = "actix-web-codegen" }
 actix-files = { path = "actix-files" }
 actix-multipart = { path = "actix-multipart" }
 awc = { path = "awc" }
+actix-connect = { git = "https://github.com/JohnTitor/actix-net", branch = "next-connect-tls" }
+actix-tls = { git = "https://github.com/JohnTitor/actix-net", branch = "next-connect-tls" }
 
 [[example]]
 name = "client"
