@@ -4,7 +4,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
   push:
-    branches: [master]
 
 jobs:
   build_and_test:
@@ -12,13 +11,14 @@ jobs:
       fail-fast: false
       matrix:
         target:
-          - { name: Linux, os: ubuntu-latest, triple: x86_64-unknown-linux-gnu }
-          - { name: macOS, os: macos-latest, triple: x86_64-apple-darwin }
           - { name: Windows, os: windows-2022, triple: x86_64-pc-windows-msvc }
         version:
-          - 1.52.0 # MSRV
-          - stable
-          - nightly
+          - nightly-2021-10-26
+          - nightly-2021-10-27
+          - nightly-2021-10-28
+          - nightly-2021-10-29
+          - nightly-2021-10-30
+          - nightly-2021-10-31
 
     name: ${{ matrix.target.name }} / ${{ matrix.version }}
     runs-on: ${{ matrix.target.os }}
@@ -87,92 +87,3 @@ jobs:
         run: |
           cargo install cargo-cache --version 0.6.3 --no-default-features --features ci-autoclean
           cargo-cache
-
-  ci_feature_powerset_check:
-    name: Verify Feature Combinations
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install stable
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable-x86_64-unknown-linux-gnu
-          profile: minimal
-          override: true
-
-      - name: Generate Cargo.lock
-        uses: actions-rs/cargo@v1
-        with: { command: generate-lockfile }
-      - name: Cache Dependencies
-        uses: Swatinem/rust-cache@v1.2.0
-
-      - name: Install cargo-hack
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: cargo-hack
-
-      - name: check feature combinations
-        # if: github.ref == 'refs/heads/master'
-        uses: actions-rs/cargo@v1
-        with: { command: ci-feature-powerset-check-all }
-
-  coverage:
-    name: coverage
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install stable
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable-x86_64-unknown-linux-gnu
-          profile: minimal
-          override: true
-
-      - name: Generate Cargo.lock
-        uses: actions-rs/cargo@v1
-        with: { command: generate-lockfile }
-      - name: Cache Dependencies
-        uses: Swatinem/rust-cache@v1.2.0
-
-      - name: Generate coverage file
-        if: github.ref == 'refs/heads/master'
-        run: |
-          cargo install cargo-tarpaulin --vers "^0.13"
-          cargo tarpaulin --workspace --features=rustls,openssl --out Xml --verbose
-      - name: Upload to Codecov
-        if: github.ref == 'refs/heads/master'
-        uses: codecov/codecov-action@v1
-        with: { file: cobertura.xml }
-
-  rustdoc:
-    name: rustdoc
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install Rust (nightly)
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly-x86_64-unknown-linux-gnu
-          profile: minimal
-          override: true
-
-      - name: Generate Cargo.lock
-        uses: actions-rs/cargo@v1
-        with: { command: generate-lockfile }
-      - name: Cache Dependencies
-        uses: Swatinem/rust-cache@v1.3.0
-
-      - name: Install cargo-hack
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: cargo-hack
-
-      - name: doc tests
-        uses: actions-rs/cargo@v1
-        timeout-minutes: 40
-        with: { command: ci-doctest }
