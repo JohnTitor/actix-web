@@ -1210,6 +1210,14 @@ where
 {
     /// Start listening for incoming connections.
     ///
+    /// `run()` returns a [`Server`] value that must be polled in order to start running.
+    /// Calling this method alone does not begin accepting connections. The returned future is
+    /// usually driven by awaiting it or spawning it on a runtime.
+    ///
+    /// If you need startup synchronization, coordinate from the task that polls the
+    /// [`Server`] future (for example, with a channel and [`Server::handle`]) before dispatching
+    /// traffic.
+    ///
     /// # Workers
     /// This method starts a number of HTTP workers in separate threads. The number of workers in a
     /// set is defined by [`workers()`](Self::workers) or, by default, the number of the machine's
